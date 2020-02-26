@@ -1,23 +1,46 @@
+RED   = (202,52,51)
+GREEN = (67,124,23)
+GREY  = (200, 200, 200)
+WHITE = 255
+BLACK = (0, 0, 0)
+
 class Node:
-    def __init__(self):
+    def __init__(self, node_size, center_size):
         self.neighbors = []
         self.x = 0
         self.y = 0
+        self.node_size = node_size
+        self.center_size = center_size
     def set(self, list, x, y):
         self.neighbors = list
         self.x = x
         self.y = y
+    def _draw(self, node_color, center_color):
+        fill(node_color[0],node_color[1],node_color[2])
+        ellipse( self.x, self.y, self.node_size, self.node_size )
+        fill(center_color[0],center_color[1],center_color[2])
+        ellipse( self.x, self.y, self.center_size, self.center_size )
+        for neighbor in self.neighbors:
+            line( self.x, self.y, neighbor.x, neighbor.y )
 
 class GameManager:
-    def __init__(self, game_size):
+    def __init__(self, game_size, game_state, node_percent, center_percent, pieces_per_player, piece_size_percent):
+        self.selected_piece =''
+        self.game_state = game_state
+        self.players = [ 
+            Player(RED, pieces_per_player, game_size * node_percent * piece_size_percent),
+            Player(GREEN, pieces_per_player, game_size * node_percent * piece_size_percent)
+        ]
+        self.nodes = []
+        for i in range(24):
+            self.nodes.append(Node(game_size * node_percent, game_size * node_percent * center_percent))
+        
         s1 = game_size * .1
         s2 = game_size * .3
         s3 = game_size * .5
         s4 = game_size * .7
         s5 = game_size * .9
-        self.nodes = []
-        for i in range(24):
-            self.nodes.append(Node())
+
         self.nodes[0].set( [self.nodes[1], self.nodes[2]], s3, s1 )
         self.nodes[1].set( [self.nodes[0], self.nodes[3]], s2, s1 )
         self.nodes[2].set( [self.nodes[0], self.nodes[4]], s4, s1 )
@@ -42,3 +65,24 @@ class GameManager:
         self.nodes[21].set( [self.nodes[19], self.nodes[23]], s2, s5 )
         self.nodes[22].set( [self.nodes[20], self.nodes[23]], s4, s5 ) 
         self.nodes[23].set( [self.nodes[21], self.nodes[22]], s3, s5 )
+
+class Player:
+    # inputs:
+    #     player_color is the player color
+    #     num_pieces is the number of pieces the player has
+    #     piece_size of a players game piece
+    def __init__(self, player_color, num_pieces, piece_size ):
+        self.pieces = []
+        for i in range( num_pieces ):
+            self.pieces.append( GamePiece( player_color, piece_size ) )
+
+class GamePiece:
+    def __init__(self, piece_color, size):
+        self.node = ''
+        self.color = piece_color
+        self.size = size
+
+    def drawPiece(self):
+        if self.node != '':
+            fill( self.color[0], self.color[1], self.color[2] )
+            ellipse( node.x, node.y, self.size, self.size)
