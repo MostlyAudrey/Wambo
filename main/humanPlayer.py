@@ -12,7 +12,6 @@ class HumanPlayer(PlayerIntellegence):
                     return True
        
     def show_possible_moves(self, mouse_click):
-        print "Here"
         return False
     
     def commit_move(self, mouse_click):

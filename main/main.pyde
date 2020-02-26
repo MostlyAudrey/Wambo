@@ -74,11 +74,15 @@ def mouseClicked():
 def _next_state():
     global turn_counter
     global active_player
-    if GAME_MANAGER.game_state == PICK_PIECE: GAME_MANAGER.game_state = SHOW_POSSIBLE_MOVES
-    if GAME_MANAGER.game_state == SHOW_POSSIBLE_MOVES: GAME_MANAGER.game_state = MOVE_MADE
+    if GAME_MANAGER.game_state == PICK_PIECE:
+        GAME_MANAGER.game_state = SHOW_POSSIBLE_MOVES
+        return
+    if GAME_MANAGER.game_state == SHOW_POSSIBLE_MOVES:
+        GAME_MANAGER.game_state = MOVE_MADE
+        return
     if GAME_MANAGER.game_state == MOVE_MADE:
         print "Next Player"
         turn_counter = turn_counter + 1
-        active_player = (active_player + 1) % 2
+        active_player = active_player + 1 % 2
         GAME_MANAGER.game_state = PICK_PIECE
     
