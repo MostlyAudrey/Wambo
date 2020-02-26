@@ -1,3 +1,5 @@
+from playerIntellegence import PlayerIntellegence
+
 RED   = (202,52,51)
 GREEN = (67,124,23)
 GREY  = (200, 200, 200)
@@ -24,12 +26,12 @@ class Node:
             line( self.x, self.y, neighbor.x, neighbor.y )
 
 class GameManager:
-    def __init__(self, game_size, game_state, node_percent, center_percent, pieces_per_player, piece_size_percent):
+    def __init__(self, game_size, game_state, node_percent, center_percent, pieces_per_player, piece_size_percent, player_one_int, player_two_int ):
         self.selected_piece =''
         self.game_state = game_state
         self.players = [ 
-            Player(RED, pieces_per_player, game_size * node_percent * piece_size_percent),
-            Player(GREEN, pieces_per_player, game_size * node_percent * piece_size_percent)
+            Player(RED, pieces_per_player, game_size * node_percent * piece_size_percent, player_one_int),
+            Player(GREEN, pieces_per_player, game_size * node_percent * piece_size_percent, player_two_int)
         ]
         self.nodes = []
         for i in range(24):
@@ -71,8 +73,11 @@ class Player:
     #     player_color is the player color
     #     num_pieces is the number of pieces the player has
     #     piece_size of a players game piece
-    def __init__(self, player_color, num_pieces, piece_size ):
+    def __init__(self, player_color, num_pieces, piece_size, intellegence ):
+        if not isinstance( intellegence, PlayerIntellegence ): 
+            raise TypeError("A Players Intellegence must be a subclass of PlayerIntellegence")
         self.pieces = []
+        self.intellegence = intellegence
         for i in range( num_pieces ):
             self.pieces.append( GamePiece( player_color, piece_size ) )
 
