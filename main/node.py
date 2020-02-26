@@ -1,4 +1,4 @@
-from playerIntellegence import PlayerIntellegence
+from humanPlayer import HumanPlayer
 
 RED   = (202,52,51)
 GREEN = (67,124,23)
@@ -24,24 +24,29 @@ class Node:
         ellipse( self.x, self.y, self.center_size, self.center_size )
         for neighbor in self.neighbors:
             line( self.x, self.y, neighbor.x, neighbor.y )
+    def checkCollision(self, x, y):
+        if x > self.x - self.size / 2 and x < self.x + self.size / 2:
+                if y > self.y - self.size / 2 and y < self.y + self.size / 2:
+                    return True
+        return False
 
 class GameManager:
     def __init__(self, game_size, game_state, node_percent, center_percent, pieces_per_player, piece_size_percent, player_one_int, player_two_int ):
         self.selected_piece =''
         self.game_state = game_state
         self.players = [ 
-            Player(RED, pieces_per_player, game_size * node_percent * piece_size_percent, player_one_int),
-            Player(GREEN, pieces_per_player, game_size * node_percent * piece_size_percent, player_two_int)
+            eval(player_one_int + "(RED, pieces_per_player, node_percent * piece_size_percent, game_size)"),
+            eval(player_two_int + "(GREEN, pieces_per_player, node_percent * piece_size_percent, game_size)")
         ]
         self.nodes = []
         for i in range(24):
             self.nodes.append(Node(game_size * node_percent, game_size * node_percent * center_percent))
         
-        s1 = game_size * .1
-        s2 = game_size * .3
-        s3 = game_size * .5
-        s4 = game_size * .7
-        s5 = game_size * .9
+        s1 = ( game_size * .1 ) + ( game_size * .05 )
+        s2 = ( game_size * .3 ) + ( game_size * .025 )
+        s3 = ( game_size * .5 )
+        s4 = ( game_size * .7 ) - ( game_size * .025 )
+        s5 = ( game_size * .9 ) - ( game_size * .05 )
 
         self.nodes[0].set( [self.nodes[1], self.nodes[2]], s3, s1 )
         self.nodes[1].set( [self.nodes[0], self.nodes[3]], s2, s1 )
@@ -68,26 +73,7 @@ class GameManager:
         self.nodes[22].set( [self.nodes[20], self.nodes[23]], s4, s5 ) 
         self.nodes[23].set( [self.nodes[21], self.nodes[22]], s3, s5 )
 
-class Player:
-    # inputs:
-    #     player_color is the player color
-    #     num_pieces is the number of pieces the player has
-    #     piece_size of a players game piece
-    def __init__(self, player_color, num_pieces, piece_size, intellegence ):
-        if not isinstance( intellegence, PlayerIntellegence ): 
-            raise TypeError("A Players Intellegence must be a subclass of PlayerIntellegence")
-        self.pieces = []
-        self.intellegence = intellegence
-        for i in range( num_pieces ):
-            self.pieces.append( GamePiece( player_color, piece_size ) )
-
-class GamePiece:
-    def __init__(self, piece_color, size):
-        self.node = ''
-        self.color = piece_color
-        self.size = size
-
-    def drawPiece(self):
-        if self.node != '':
-            fill( self.color[0], self.color[1], self.color[2] )
-            ellipse( node.x, node.y, self.size, self.size)
+class MouseAction:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
