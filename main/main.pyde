@@ -29,4 +29,5 @@ def setup():
             line( node.x, node.y, neighbor.x, neighbor.y )
 
 def draw():
+    pass
     #This is called every frame
