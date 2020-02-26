@@ -1,7 +1,7 @@
 from node import Node, GameManager, Player, GamePiece
 from playerIntellegence import PlayerIntellegence
 from humanPlayer import HumanPlayer 
-from aggressiveAI import AggressiveAI
+from aggressiveAI import AgressiveAI
 from defensiveAI import DefensiveAI
 
 # Constants
