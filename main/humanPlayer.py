@@ -25,29 +25,7 @@ class HumanPlayer(PlayerIntelligence):
 
     def show_possible_moves(self, mouse_click):
         if self.possible_moves is None:
-            node_stack = []
-            nodes_to_color = []
-            if self.selected_piece.node:
-                node_stack.append((self.selected_piece.node, 0))
-            else:
-                start_indexes = GREEN_START_NODES
-                if self.player_color == RED:
-                    start_indexes = RED_START_NODES
-                for index in start_indexes:
-                    node_stack.append((self.node_list[index], 1))
-            while len(node_stack):
-                curr = node_stack.pop()
-                if curr[0].occupied:
-                    if curr[0].occupied.color != self.player_color:
-                        nodes_to_color.append(curr[0])
-                        continue
-                else:
-                    nodes_to_color.append(curr[0])
-                if curr[1] < NUM_MOVES:
-                    for child in curr[0].neighbors:
-                        node_stack.append((child, curr[1] + 1))
-            nodes_to_color = list(dict.fromkeys(nodes_to_color))
-            self.possible_moves = nodes_to_color
+            self.possible_moves = PlayerIntelligence.compute_possible_moves(self, self.selected_piece)
             self._draw_possible_moves()
             return 0
         if not mouse_click:

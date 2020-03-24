@@ -21,7 +21,7 @@ NUM_PIECES_PER_PLAYER = 3
 
 # Determine the types of players
 PLAYER_ONE_INT        = "HumanPlayer"
-PLAYER_TWO_INT        = "DefensiveAI"
+PLAYER_TWO_INT        = "HumanPlayer"
 
 # Game Manager
 GAME_MANAGER = None
