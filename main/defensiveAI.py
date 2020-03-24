@@ -1,5 +1,8 @@
 from playerIntelligence import PlayerIntelligence
+from gamePiece import GamePiece
 
+RED = (202, 52, 51)
+GREEN = (67, 124, 23)
 
 class DefensiveAI(PlayerIntelligence):
     # This counter is used to slow the AI down, so we can see how it is making its move
@@ -8,11 +11,24 @@ class DefensiveAI(PlayerIntelligence):
     threshold = 100
 
     def picking_piece(self, mouse_click):
-        # TODO actually make a decision on what piece to pick
-        #  and not just pick the first piece
-        piece = self.pieces[0]
-        self.selected_piece = piece
-        piece.drawBorder()
+        # Prioritise getting all the pieces out onto the board
+        if self.player_color is RED:
+            cond = GamePiece.num_on_red_bench != 0
+        else:
+            cond = GamePiece.num_on_green_bench != 0
+
+        if cond:
+            for piece in self.pieces:
+                if piece.node is None:
+                    self.selected_piece = piece
+                    break
+        else:
+            # TODO make a smart choice on what piece to pick since they are
+            #  all currently on the board
+            self.selected_piece = self.pieces[0]
+
+        # Highlight the selected piece
+        self.selected_piece.drawBorder()
         return 1
 
     def show_possible_moves(self, mouse_click):
