@@ -1,7 +1,7 @@
-from playerIntellegence import PlayerIntellegence
+from playerIntelligence import PlayerIntelligence
 
 
-class AgressiveAI(PlayerIntellegence):
+class AgressiveAI(PlayerIntelligence):
     def picking_piece(self):
         print("Here1")
 

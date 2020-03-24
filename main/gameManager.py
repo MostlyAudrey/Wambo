@@ -1,4 +1,5 @@
 from humanPlayer import HumanPlayer
+from defensiveAI import DefensiveAI
 from node import Node
 from gamePiece import GamePiece
 

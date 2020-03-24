@@ -1,7 +1,7 @@
 from gameManager import GameManager
 from node import Node, MouseAction
-from playerIntellegence import PlayerIntellegence
-from humanPlayer import HumanPlayer 
+from playerIntelligence import PlayerIntelligence
+from humanPlayer import HumanPlayer
 from aggressiveAI import AgressiveAI
 from defensiveAI import DefensiveAI
 
@@ -13,7 +13,7 @@ MOVE_MADE           = 2
 GAME_OVER           = 3
 
 # Game Sizes
-GAME_SIZE             = 1000
+GAME_SIZE             = 800
 NODE_PERCENT          = .1
 CENTER_PERCENT        = .1
 PIECE_PERCENT         = .5
@@ -21,7 +21,7 @@ NUM_PIECES_PER_PLAYER = 3
 
 # Determine the types of players
 PLAYER_ONE_INT        = "HumanPlayer"
-PLAYER_TWO_INT        = "HumanPlayer"
+PLAYER_TWO_INT        = "DefensiveAI"
 
 # Game Manager
 GAME_MANAGER = None
@@ -36,6 +36,7 @@ WHITE = 255
 turn_counter = 0
 active_player = 0
 last_mouse_click = None
+
 
 def setup():
     # This is called on initialization
@@ -55,7 +56,8 @@ def setup():
         for piece in player.pieces:
             piece.putOnBench()
     _draw_active_player()
-            
+
+
 def draw():
     # This function is called every frame
     player_logic = GAME_MANAGER.players[active_player]
@@ -72,9 +74,11 @@ def draw():
     last_mouse_click = None
     pass
 
+
 def mouseClicked():
     global last_mouse_click
     last_mouse_click = MouseAction(mouseX, mouseY)
+
 
 def _next_state(command):
     global turn_counter
@@ -107,7 +111,7 @@ def _next_state(command):
         background( color[0], color[1], color[2] )
     if command == 4:
         setup()
-        
+
 
 def _draw_active_player():
     color = GAME_MANAGER.players[active_player].player_color

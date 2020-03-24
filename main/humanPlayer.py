@@ -1,4 +1,4 @@
-from playerIntellegence import PlayerIntellegence
+from playerIntelligence import PlayerIntelligence
 
 RED = (202, 52, 51)
 GREEN = (67, 124, 23)
@@ -11,7 +11,7 @@ RED_START_NODES = [3, 4]
 GREEN_START_NODES = [19, 20]
 
 
-class HumanPlayer(PlayerIntellegence):
+class HumanPlayer(PlayerIntelligence):
 
     def picking_piece(self, mouse_click):
         if not mouse_click:
