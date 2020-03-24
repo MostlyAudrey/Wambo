@@ -16,6 +16,14 @@ class DefensiveAI(PlayerIntelligence):
             self.possible_moves = PlayerIntelligence.compute_possible_moves(self, self.selected_piece)
             PlayerIntelligence.draw_possible_moves(self, self.possible_moves, self.selected_piece)
             return 0
+        else:
+            node = self.possible_moves[0]
+            self.selected_piece.undrawBorder()
+            node.remove_highlight()
+            return self.selected_piece.setNode(node)
 
     def commit_move(self, mouse_click):
-        print("Here3")
+        PlayerIntelligence.undraw_possible_moves(self, self.possible_moves)
+        self.selected_piece = None
+        self.possible_moves = None
+        return True

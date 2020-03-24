@@ -33,7 +33,7 @@ class HumanPlayer(PlayerIntelligence):
         if self.selected_piece.checkCollision(mouse_click.x, mouse_click.y):
             self.selected_piece.undrawBorder()
             self.selected_piece = None
-            self._undraw_possible_moves()
+            PlayerIntelligence.undraw_possible_moves(self, self.possible_moves)
             self.possible_moves = None
             return 2
         for node in self.possible_moves:
