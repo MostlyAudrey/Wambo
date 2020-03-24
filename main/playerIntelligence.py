@@ -1,6 +1,8 @@
 from gamePiece import GamePiece
 
 RED = (202, 52, 51)
+BLUE = (0, 128, 255)
+BLACK = (0, 0, 0)
 NUM_MOVES = 2
 RED_START_NODES = [3, 4]
 GREEN_START_NODES = [19, 20]
@@ -44,6 +46,25 @@ class PlayerIntelligence:
 
         # These are all the accumulated possible moves
         return list(dict.fromkeys(nodes_to_color))
+
+    # Draw all the possible moves -- eliminating any ones that are invalid
+    def draw_possible_moves(self, moves, piece):
+        for node in moves:
+            if node.occupied:
+                if node.occupied.color == self.player_color:
+                    moves.remove(node)
+                    continue
+                if (node.label in RED_START_NODES or node.label in GREEN_START_NODES) and not piece.node:
+                    moves.remove(node)
+                    continue
+                node.highlight(BLUE)
+            else:
+                node.highlight(BLACK)
+
+    # Clear the highlight done by _draw_possible_moves
+    def undraw_possible_moves(self, moves):
+        for piece in moves:
+            piece.remove_highlight()
 
 
     def player_picking_piece(self, mouse_click):

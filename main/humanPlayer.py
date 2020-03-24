@@ -26,7 +26,7 @@ class HumanPlayer(PlayerIntelligence):
     def show_possible_moves(self, mouse_click):
         if self.possible_moves is None:
             self.possible_moves = PlayerIntelligence.compute_possible_moves(self, self.selected_piece)
-            self._draw_possible_moves()
+            PlayerIntelligence.draw_possible_moves(self, self.possible_moves, self.selected_piece)
             return 0
         if not mouse_click:
             return 0
@@ -42,25 +42,8 @@ class HumanPlayer(PlayerIntelligence):
                 node.remove_highlight()
                 return self.selected_piece.setNode(node)
 
-    def _draw_possible_moves(self):
-        for node in self.possible_moves:
-            if node.occupied:
-                if node.occupied.color == self.player_color:
-                    self.possible_moves.remove(node)
-                    continue
-                if (node.label in RED_START_NODES or node.label in GREEN_START_NODES) and not self.selected_piece.node:
-                    self.possible_moves.remove(node)
-                    continue
-                node.highlight(BLUE)
-            else:
-                node.highlight(BLACK)
-
-    def _undraw_possible_moves(self):
-        for piece in self.possible_moves:
-            piece.remove_highlight()
-
     def commit_move(self, mouse_click):
-        self._undraw_possible_moves()
+        PlayerIntelligence.undraw_possible_moves(self, self.possible_moves)
         self.selected_piece = None
         self.possible_moves = None
         return True
