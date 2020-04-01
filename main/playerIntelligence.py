@@ -67,7 +67,7 @@ class PlayerIntelligence:
             piece.remove_highlight()
 
 
-    def player_picking_piece(self, mouse_click):
+    def picking_piece(self, mouse_click):
         raise NotImplementedError("Must be called on concrete child class")
 
     def show_possible_moves(self, mouse_click):

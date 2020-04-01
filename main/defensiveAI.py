@@ -1,6 +1,7 @@
 from playerIntelligence import PlayerIntelligence
 from gamePiece import GamePiece
 import random
+from operator import itemgetter, attrgetter
 
 RED = (202, 52, 51)
 GREEN = (67, 124, 23)
@@ -9,8 +10,15 @@ GREEN = (67, 124, 23)
 class DefensiveAI(PlayerIntelligence):
     # This counter is used to slow the AI down, so we can see how it is making its move
     # TODO - I'm not sure if this is the best way to do this, so if there is one, please fix this
+    #  or remove this line if this approach is OK
     wait = 0
-    threshold = 100
+    threshold = 5
+
+    def __init__(self, player_color, num_pieces, piece_size, game_size, node_list):
+        PlayerIntelligence.__init__(self, player_color, num_pieces, piece_size, game_size, node_list)
+        # FIXME: make these fields configurable
+        self.offensive = True
+        self.aggressive = True
 
     def picking_piece(self, mouse_click):
         # Prioritise getting all the pieces out onto the board
@@ -24,14 +32,6 @@ class DefensiveAI(PlayerIntelligence):
                 if piece.node is None:
                     self.selected_piece = piece
                     break
-
-            if self.selected_piece is None:
-                print "Here, but shouldn't be..."
-                print GamePiece.num_on_red_bench
-                print GamePiece.num_on_green_bench
-
-                for piece in self.pieces:
-                    print piece
         else:
             # Pick one of the pieces, randomly
             pos = random.randint(0, len(self.pieces) - 1)
@@ -56,14 +56,47 @@ class DefensiveAI(PlayerIntelligence):
 
             best = None
 
-            # Choose the game ending move, if its a possibility
+            # Choose the game ending move, if it's a possibility
             for node in self.possible_moves:
                 if node.goal == self.player_color:
                     best = node
                     break
 
             if best is None:
-                best = self.possible_moves[0]
+                #
+                # Rank the possible moves based on position
+                #   - Offensive: rank starting from the moves that make the piece
+                #     move towards closest to the goal.
+                #   - Defensive: do the opposite: rank based on moves that make the piece
+                #     stay close to its home
+                #
+                if self.offensive and self.player_color == RED or \
+                        not self.offensive and self.player_color == GREEN:
+                    self.possible_moves.sort(key=attrgetter('label'), reverse=True)
+                else:
+                    self.possible_moves.sort(key=attrgetter('label'))
+
+                #
+                # Look through the newly ordered possible_moves to find the move to pick
+                # based on the desired aggressiveness policy
+                #
+                # - Aggressive: select the first move which attacks the other player's piece,
+                #   if such a move exists. Otherwise, just select the first move
+                #
+                # - Passive: select the first move that does not attack the other player's piece.
+                #   Attacking is only a last-ditch, no-other-option option
+                #
+                for move in self.possible_moves:
+                    if move.occupied and self.aggressive:
+                        best = move
+                        break
+
+                    if not move.occupied and not self.aggressive:
+                        best = move
+                        break
+
+                if best is None:
+                    best = self.possible_moves[0]
 
             self.selected_piece.undrawBorder()
             best.remove_highlight()
