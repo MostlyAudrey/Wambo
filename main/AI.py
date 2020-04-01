@@ -9,12 +9,12 @@ GREEN = (67, 124, 23)
 
 class AI(PlayerIntelligence):
     # This counter is used to slow the AI down, so we can see how it is making its move
+    # The threshold has currently been set very low, so AI-vs-AI play can proceed quickly
     wait = 0
     threshold = 5
 
     def __init__(self, player_color, num_pieces, piece_size, game_size, node_list, offensive=True, aggressive=True):
         PlayerIntelligence.__init__(self, player_color, num_pieces, piece_size, game_size, node_list)
-        # FIXME: make these fields configurable
         self.offensive = offensive
         self.aggressive = aggressive
 
