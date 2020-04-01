@@ -1,5 +1,5 @@
 from humanPlayer import HumanPlayer
-from defensiveAI import DefensiveAI
+from AI import AI
 from node import Node
 from gamePiece import GamePiece
 
@@ -18,11 +18,24 @@ class GameManager:
         self.selected_piece = ''
         self.game_state = game_state
         self.nodes = []
-        self.players = [
-            eval(player_one_int + "(RED, pieces_per_player, node_percent * piece_size_percent, game_size, self.nodes)"),
-            eval(
-                player_two_int + "(GREEN, pieces_per_player, node_percent * piece_size_percent, game_size, self.nodes)")
-        ]
+        self.players = []
+
+        red_str = "RED, pieces_per_player, node_percent * piece_size_percent, game_size, self.nodes"
+        green_str = "GREEN, pieces_per_player, node_percent * piece_size_percent, game_size, self.nodes"
+
+        # Handle AI parameters -- if they exist
+        if isinstance(player_one_int, list):
+            self.players.append(eval(player_one_int[0] + "(" + red_str + ", " + player_one_int[1] +
+                                     ", " + player_one_int[2] + ")"))
+        else:
+            self.players.append(eval(player_one_int + "(" + red_str + ")"))
+
+        if isinstance(player_two_int, list):
+            self.players.append(eval(player_two_int[0] + "(" + green_str + ", " + player_two_int[1] +
+                                     ", " + player_two_int[2] + ")"))
+        else:
+            self.players.append(eval(player_two_int + "(" + green_str + ")"))
+
         for i in range(24):
             self.nodes.append(Node(game_size * node_percent, game_size * node_percent * center_percent, i))
 

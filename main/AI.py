@@ -1,24 +1,22 @@
 from playerIntelligence import PlayerIntelligence
 from gamePiece import GamePiece
 import random
-from operator import itemgetter, attrgetter
+from operator import attrgetter
 
 RED = (202, 52, 51)
 GREEN = (67, 124, 23)
 
 
-class DefensiveAI(PlayerIntelligence):
+class AI(PlayerIntelligence):
     # This counter is used to slow the AI down, so we can see how it is making its move
-    # TODO - I'm not sure if this is the best way to do this, so if there is one, please fix this
-    #  or remove this line if this approach is OK
     wait = 0
     threshold = 5
 
-    def __init__(self, player_color, num_pieces, piece_size, game_size, node_list):
+    def __init__(self, player_color, num_pieces, piece_size, game_size, node_list, offensive=True, aggressive=True):
         PlayerIntelligence.__init__(self, player_color, num_pieces, piece_size, game_size, node_list)
         # FIXME: make these fields configurable
-        self.offensive = True
-        self.aggressive = True
+        self.offensive = offensive
+        self.aggressive = aggressive
 
     def picking_piece(self, mouse_click):
         # Prioritise getting all the pieces out onto the board

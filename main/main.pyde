@@ -2,8 +2,7 @@ from gameManager import GameManager
 from node import Node, MouseAction
 from playerIntelligence import PlayerIntelligence
 from humanPlayer import HumanPlayer
-from aggressiveAI import AgressiveAI
-from defensiveAI import DefensiveAI
+from AI import AI
 
 # Constants
 # Game States
@@ -20,8 +19,11 @@ PIECE_PERCENT         = .5
 NUM_PIECES_PER_PLAYER = 3
 
 # Determine the types of players
-PLAYER_ONE_INT        = "DefensiveAI"
-PLAYER_TWO_INT        = "DefensiveAI"
+# Param 0: which type of player to select
+# Param 1: offensive=True, defensive=False
+# Param 2: aggressive=True, passive=False
+PLAYER_ONE_INT        = ["AI", "True", "True"]
+PLAYER_TWO_INT        = ["AI", "False", "False"]
 
 # Game Manager
 GAME_MANAGER = None
