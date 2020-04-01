@@ -20,7 +20,7 @@ PIECE_PERCENT         = .5
 NUM_PIECES_PER_PLAYER = 3
 
 # Determine the types of players
-PLAYER_ONE_INT        = "HumanPlayer"
+PLAYER_ONE_INT        = "DefensiveAI"
 PLAYER_TWO_INT        = "DefensiveAI"
 
 # Game Manager

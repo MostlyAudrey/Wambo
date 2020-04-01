@@ -1,5 +1,6 @@
 from playerIntelligence import PlayerIntelligence
 from gamePiece import GamePiece
+import random
 
 RED = (202, 52, 51)
 GREEN = (67, 124, 23)
@@ -12,7 +13,7 @@ class DefensiveAI(PlayerIntelligence):
 
     def picking_piece(self, mouse_click):
         # Prioritise getting all the pieces out onto the board
-        if self.player_color is RED:
+        if self.player_color == RED:
             cond = GamePiece.num_on_red_bench != 0
         else:
             cond = GamePiece.num_on_green_bench != 0
@@ -22,10 +23,18 @@ class DefensiveAI(PlayerIntelligence):
                 if piece.node is None:
                     self.selected_piece = piece
                     break
+
+            if self.selected_piece is None:
+                print "Here, but shouldn't be..."
+                print GamePiece.num_on_red_bench
+                print GamePiece.num_on_green_bench
+
+                for piece in self.pieces:
+                    print piece
         else:
-            # TODO make a smart choice on what piece to pick since they are
-            #  all currently on the board
-            self.selected_piece = self.pieces[0]
+            # Pick one of the pieces, randomly
+            pos = random.randint(0, len(self.pieces) - 1)
+            self.selected_piece = self.pieces[pos]
 
         # Highlight the selected piece
         self.selected_piece.drawBorder()

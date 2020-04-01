@@ -95,3 +95,6 @@ class GamePiece:
             return False
         else:
             return self.node.checkCollision(x, y)
+
+    def __str__(self):
+        return str(self.node) + ", colour: " + str(self.color)
