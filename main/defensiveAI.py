@@ -5,6 +5,7 @@ import random
 RED = (202, 52, 51)
 GREEN = (67, 124, 23)
 
+
 class DefensiveAI(PlayerIntelligence):
     # This counter is used to slow the AI down, so we can see how it is making its move
     # TODO - I'm not sure if this is the best way to do this, so if there is one, please fix this
@@ -53,10 +54,20 @@ class DefensiveAI(PlayerIntelligence):
             else:
                 self.wait = 0
 
-            node = self.possible_moves[0]
+            best = None
+
+            # Choose the game ending move, if its a possibility
+            for node in self.possible_moves:
+                if node.goal == self.player_color:
+                    best = node
+                    break
+
+            if best is None:
+                best = self.possible_moves[0]
+
             self.selected_piece.undrawBorder()
-            node.remove_highlight()
-            return self.selected_piece.setNode(node)
+            best.remove_highlight()
+            return self.selected_piece.setNode(best)
 
     def commit_move(self, mouse_click):
         PlayerIntelligence.undraw_possible_moves(self, self.possible_moves)
