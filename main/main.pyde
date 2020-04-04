@@ -52,8 +52,6 @@ def setup():
     background(color(WHITE))
     size( GAME_SIZE, GAME_SIZE)
     global GAME_MANAGER
-    print (PLAYER_ONE_INT)
-    print(PLAYER_TWO_INT)
     GAME_MANAGER = GameManager(GAME_SIZE, STARTING_STATE, NODE_PERCENT, CENTER_PERCENT, NUM_PIECES_PER_PLAYER, PIECE_PERCENT, PLAYER_ONE_INT, PLAYER_TWO_INT)
     if GAME_MANAGER.game_state != INIT_SCREEN:
         for i in range( len( GAME_MANAGER.nodes ) ):
