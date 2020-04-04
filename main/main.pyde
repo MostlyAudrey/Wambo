@@ -52,6 +52,8 @@ def setup():
     background(color(WHITE))
     size( GAME_SIZE, GAME_SIZE)
     global GAME_MANAGER
+    print (PLAYER_ONE_INT)
+    print(PLAYER_TWO_INT)
     GAME_MANAGER = GameManager(GAME_SIZE, STARTING_STATE, NODE_PERCENT, CENTER_PERCENT, NUM_PIECES_PER_PLAYER, PIECE_PERCENT, PLAYER_ONE_INT, PLAYER_TWO_INT)
     if GAME_MANAGER.game_state != INIT_SCREEN:
         for i in range( len( GAME_MANAGER.nodes ) ):
@@ -186,6 +188,8 @@ def drawMenuScreen(mouse_click):
                 break;
     
     if keyPressed and (key == ENTER or  key == RETURN):
+        global PLAYER_ONE_INT
+        global PLAYER_TWO_INT
         PLAYER_ONE_INT = []
         PLAYER_TWO_INT = []
         for index, option in enumerate(options_1):
@@ -194,9 +198,9 @@ def drawMenuScreen(mouse_click):
             elif index == 3:
                 PLAYER_TWO_INT.append('AI' if option[1] else 'HUMAN')
             elif index < 3:
-                PLAYER_ONE_INT.append('TRUE' if option[1] else 'FALSE')
+                PLAYER_ONE_INT.append('True' if option[1] else 'False')
             else:
-                PLAYER_TWO_INT.append('TRUE' if option[1] else 'FALSE')
+                PLAYER_TWO_INT.append('True' if option[1] else 'False')
         STARTING_STATE = PICK_PIECE
         setup()
             
