@@ -153,6 +153,7 @@ def writeToFile(player_1_info, player_two_info, results):
     player_1_agressive = 'Aggressive' if player_1_info[2] == 'True' else 'Passive'
     player_2_offensive = 'Offensive' if player_two_info[1] == 'True' else 'Defensive'
     player_2_agressive = 'Agressive' if player_two_info[2] == 'True' else 'Defensive'
+    turns = []
     filename = player_1_offensive + '-' + player_1_agressive + ' vs. ' + player_2_offensive + '-' + player_2_agressive + ' ' + str(len(results)) + ' Trials'
     f1=open('../' + filename + '.txt', 'w+')
     f1.write('Player 1 is ' + player_1_offensive + '/' + player_1_agressive + '. Player 2 is ' + player_2_offensive + '/' + player_2_agressive + '\n')
@@ -160,13 +161,25 @@ def writeToFile(player_1_info, player_two_info, results):
     player_2_wins = 0
     for dictionary in results:
         f1.write(dictionary['winner'] + ' won in ' + str(dictionary['turns']) + ' turns\n')
+        turns.append(dictionary['turns'])
         if dictionary['winner'] == 'Player 1':
             player_1_wins += 1
         else:
             player_2_wins += 1
     f1.write('Player 1: ' + str(player_1_wins) + ' wins. Player 2: ' + str(player_2_wins) + ' wins\n')
+    average = sum(turns) / len(turns)
+    std = standard_deviation(turns, average)
+    f1.write('Average Turns: ' + str(average) + '\n')
+    f1.write('Standard Deviation of Turns ' + str(std) + '\n')
     f1.close()
         
+def standard_deviation(turns, average):
+    sum = 0
+    for turn in turns:
+        difference = (turn - average) ** 2
+        sum += difference
+    sum /= len(turns)
+    return sum ** 0.5
     
 def drawMenuScreen(mouse_click):
     #6 boxes of width 60
