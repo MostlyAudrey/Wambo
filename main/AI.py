@@ -1,7 +1,7 @@
 from playerIntelligence import PlayerIntelligence
 from gamePiece import GamePiece
-import random
 from operator import attrgetter
+import random
 
 RED = (202, 52, 51)
 GREEN = (67, 124, 23)
@@ -61,6 +61,10 @@ class AI(PlayerIntelligence):
                     break
 
             if best is None:
+                # The defensive strategy employs the use of a single aggressive piece
+                last = self.pieces[len(self.pieces) - 1]
+                special = not self.offensive and self.selected_piece == last
+
                 #
                 # Rank the possible moves based on position
                 #   - Offensive: rank starting from the moves that make the piece
@@ -68,11 +72,20 @@ class AI(PlayerIntelligence):
                 #   - Defensive: do the opposite: rank based on moves that make the piece
                 #     stay close to its home
                 #
-                if self.offensive and self.player_color == RED or \
-                        not self.offensive and self.player_color == GREEN:
-                    self.possible_moves.sort(key=attrgetter('label'), reverse=True)
+
+                # The conditions were getting complicated, so they have been broken up into
+                # many smaller if statements
+
+                if self.player_color == RED:
+                    if self.offensive or special:
+                        self.possible_moves.sort(key=attrgetter('label'), reverse=True)
+                    else:
+                        self.possible_moves.sort(key=attrgetter('label'))
                 else:
-                    self.possible_moves.sort(key=attrgetter('label'))
+                    if self.offensive or special:
+                        self.possible_moves.sort(key=attrgetter('label'))
+                    else:
+                        self.possible_moves.sort(key=attrgetter('label'), reverse=True)
 
                 #
                 # Look through the newly ordered possible_moves to find the move to pick

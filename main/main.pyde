@@ -150,13 +150,13 @@ def _draw_active_player():
     
 def writeToFile(player_1_info, player_two_info, results):
     player_1_offensive = 'Offensive' if player_1_info[1] == 'True' else 'Defensive'
-    player_1_agressive = 'Aggressive' if player_1_info[2] == 'True' else 'Passive'
+    player_1_aggressive = 'Aggressive' if player_1_info[2] == 'True' else 'Passive'
     player_2_offensive = 'Offensive' if player_two_info[1] == 'True' else 'Defensive'
-    player_2_agressive = 'Agressive' if player_two_info[2] == 'True' else 'Defensive'
+    player_2_aggressive = 'Aggressive' if player_two_info[2] == 'True' else 'Passive'
     turns = []
-    filename = player_1_offensive + '-' + player_1_agressive + ' vs. ' + player_2_offensive + '-' + player_2_agressive + ' ' + str(len(results)) + ' Trials'
+    filename = player_1_offensive + '-' + player_1_aggressive + ' vs. ' + player_2_offensive + '-' + player_2_aggressive + ' ' + str(len(results)) + ' Trials'
     f1=open('../' + filename + '.txt', 'w+')
-    f1.write('Player 1 is ' + player_1_offensive + '/' + player_1_agressive + '. Player 2 is ' + player_2_offensive + '/' + player_2_agressive + '\n')
+    f1.write('Player 1 is ' + player_1_offensive + '/' + player_1_aggressive + '. Player 2 is ' + player_2_offensive + '/' + player_2_aggressive + '\n')
     player_1_wins = 0
     player_2_wins = 0
     for dictionary in results:
