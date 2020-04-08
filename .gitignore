@@ -10,4 +10,5 @@ application.macosx
 out
 .idea/
 *.pyc
+*.txt
 
