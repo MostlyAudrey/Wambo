@@ -1,0 +1,14 @@
+Player 1 is Defensive/Passive. Player 2 is Offensive/Passive
+Player 1 won in 10 turns
+Player 2 won in 11 turns
+Player 1 won in 22 turns
+Player 2 won in 13 turns
+Player 2 won in 15 turns
+Player 2 won in 15 turns
+Player 1 won in 20 turns
+Player 1 won in 16 turns
+Player 1 won in 18 turns
+Player 2 won in 17 turns
+Player 1: 5 wins. Player 2: 5 wins
+Average Turns: 15
+Standard Deviation of Turns 3.60555127546
