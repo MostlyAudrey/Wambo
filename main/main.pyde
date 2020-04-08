@@ -45,6 +45,8 @@ last_mouse_click = None
 boxes = []
 options_1 = [('AI', True), ('Offensive', True), ('Aggressive', True), ('AI', True), ('Offensive', True), ('Aggressive', True)]
 options_2 = [('Human', False), ('Defensive', False), ('Passive', False), ('Human', False), ('Defensive', False), ('Passive', False)]
+number_of_trials = 10
+results = []
 
 
 def setup():
@@ -97,6 +99,10 @@ def _next_state(command):
     global turn_counter
     global active_player
     global GAME_MANAGER
+    global number_of_trials
+    global results
+    global PLAYER_ONE_INT
+    global PLAYER_TWO_INT
 
     if command == 1:
         if GAME_MANAGER.game_state == PICK_PIECE:
@@ -119,9 +125,20 @@ def _next_state(command):
             GAME_MANAGER.game_state = PICK_PIECE
             return
     if command == 3:
-        GAME_MANAGER.game_state = GAME_OVER
-        color = GAME_MANAGER.players[active_player].player_color
-        background( color[0], color[1], color[2] )
+        if number_of_trials == 0:
+            writeToFile(PLAYER_ONE_INT, PLAYER_TWO_INT, results)
+            print('done')
+            GAME_MANAGER.game_state = GAME_OVER
+            color = GAME_MANAGER.players[active_player].player_color
+            background( color[0], color[1], color[2] )
+        else:
+            results.append({'winner': 'Player ' + str(active_player + 1), 'turns': turn_counter})
+            print(str(number_of_trials) + " trial(s) remaining")
+            number_of_trials -= 1
+            turn_counter = 0
+            active_player = 0
+            STARTING_STATE = PICK_PIECE
+            setup()
     if command == 4:
         setup()
 
@@ -131,9 +148,30 @@ def _draw_active_player():
     fill( color[0], color[1], color[2] )
     ellipse( GAME_SIZE / 2, GAME_SIZE / 2, GAME_SIZE * NODE_PERCENT, GAME_SIZE * NODE_PERCENT )
     
+def writeToFile(player_1_info, player_two_info, results):
+    player_1_offensive = 'Offensive' if player_1_info[1] == 'True' else 'Defensive'
+    player_1_agressive = 'Aggressive' if player_1_info[2] == 'True' else 'Passive'
+    player_2_offensive = 'Offensive' if player_two_info[1] == 'True' else 'Defensive'
+    player_2_agressive = 'Agressive' if player_two_info[2] == 'True' else 'Defensive'
+    filename = player_1_offensive + '-' + player_1_agressive + ' vs. ' + player_2_offensive + '-' + player_2_agressive + ' ' + str(len(results)) + ' Trials'
+    f1=open('../' + filename + '.txt', 'w+')
+    f1.write('Player 1 is ' + player_1_offensive + '/' + player_1_agressive + '. Player 2 is ' + player_2_offensive + '/' + player_2_agressive + '\n')
+    player_1_wins = 0
+    player_2_wins = 0
+    for dictionary in results:
+        f1.write(dictionary['winner'] + ' won in ' + str(dictionary['turns']) + ' turns\n')
+        if dictionary['winner'] == 'Player 1':
+            player_1_wins += 1
+        else:
+            player_2_wins += 1
+    f1.write('Player 1: ' + str(player_1_wins) + ' wins. Player 2: ' + str(player_2_wins) + ' wins\n')
+    f1.close()
+        
+    
 def drawMenuScreen(mouse_click):
     #6 boxes of width 60
     global STARTING_STATE
+    global number_of_trials
     box_size = 100
     total_width = 6 * box_size
     start = (GAME_SIZE - total_width) / 2
@@ -143,6 +181,9 @@ def drawMenuScreen(mouse_click):
     
     fill(22)
     text('Press Enter To Begin', GAME_SIZE / 2 - 70, 50)
+    
+    fill(22)
+    text('Number of Trials: ' + str(number_of_trials) + '. Press up and down keys to adjust', GAME_SIZE / 2 - 170, 100)
     
     #draw player 1 box
     fill(222)
@@ -185,21 +226,26 @@ def drawMenuScreen(mouse_click):
                 options_2[i] = (options_2[i][0], not options_2[i][1])
                 break;
     
-    if keyPressed and (key == ENTER or  key == RETURN):
-        global PLAYER_ONE_INT
-        global PLAYER_TWO_INT
-        PLAYER_ONE_INT = []
-        PLAYER_TWO_INT = []
-        for index, option in enumerate(options_1):
-            if index == 0:
-                PLAYER_ONE_INT.append('AI' if option[1] else 'HUMAN')
-            elif index == 3:
-                PLAYER_TWO_INT.append('AI' if option[1] else 'HUMAN')
-            elif index < 3:
-                PLAYER_ONE_INT.append('True' if option[1] else 'False')
-            else:
-                PLAYER_TWO_INT.append('True' if option[1] else 'False')
-        STARTING_STATE = PICK_PIECE
-        setup()
+    if keyPressed:
+        if keyCode == UP or keyCode == RIGHT:
+            number_of_trials += 1
+        elif keyCode == DOWN or keyCode == LEFT:
+            number_of_trials -= 1
+        elif key == ENTER or key == RETURN:
+            global PLAYER_ONE_INT
+            global PLAYER_TWO_INT
+            PLAYER_ONE_INT = []
+            PLAYER_TWO_INT = []
+            for index, option in enumerate(options_1):
+                if index == 0:
+                    PLAYER_ONE_INT.append('AI' if option[1] else 'HUMAN')
+                elif index == 3:
+                    PLAYER_TWO_INT.append('AI' if option[1] else 'HUMAN')
+                elif index < 3:
+                    PLAYER_ONE_INT.append('True' if option[1] else 'False')
+                else:
+                    PLAYER_TWO_INT.append('True' if option[1] else 'False')
+            STARTING_STATE = PICK_PIECE
+            setup()
             
             
